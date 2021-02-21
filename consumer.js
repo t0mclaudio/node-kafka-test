@@ -1,0 +1,16 @@
+const { kafkaInstance } = require(".")
+
+const { kafkaInstance } = require('index.js')
+
+const consumer = kafkaInstance.consumer({ groupId: 'test-group' })
+
+await consumer.connect()
+await consumer.subscribe({ topic: 'test-topic', fromBeginning: true })
+
+await consumer.run({
+  eachMessage: async ({ topic, partition, message }) => {
+    console.log({
+      value: message.value.toString(),
+    })
+  },
+})
